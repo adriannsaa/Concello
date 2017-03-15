@@ -7,7 +7,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>concello</name>
+  <name>Concello</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -15,11 +15,42 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
+  
+	<!-- https://mvnrepository.com/artifact/junit/junit -->
+	<dependency>
+	    <groupId>junit</groupId>
+	    <artifactId>junit</artifactId>
+	    <version>4.4</version>
+	</dependency>
+ 
+    <!-- https://mvnrepository.com/artifact/javax.persistence/persistence-api -->
+	<dependency>
+	    <groupId>javax.persistence</groupId>
+	    <artifactId>persistence-api</artifactId>
+	    <version>1.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+	<dependency>
+	    <groupId>javax.validation</groupId>
+	    <artifactId>validation-api</artifactId>
+	    <version>1.1.0.Final</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>servlet-api</artifactId>
+	    <version>2.5</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+	<dependency>
+	    <groupId>javax.xml.bind</groupId>
+	    <artifactId>jaxb-api</artifactId>
+	    <version>2.2.12</version>
+	</dependency>
+	
+    
   </dependencies>
 </project>
