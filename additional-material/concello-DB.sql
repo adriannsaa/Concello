@@ -38,20 +38,17 @@ CREATE TABLE `Alumno` (
   `dni_autorizador` varchar(9),
   `descuento` varchar(6),
   `observaciones_alumno` varchar(255)
-  
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabla que contiene los alumnos de las actividades.';
+);
 
 CREATE TABLE `Actividad` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `nombre` varchar(50) NOT NULL UNIQUE,
-  `monitor` varchar(100),
+  `nombre` varchar(100) NOT NULL UNIQUE,
   `participantes` int(3),
   `horario` datetime NOT NULL,
   `lugar` varchar(50) NOT NULL,
   `material` varchar(500) NOT NULL,
-  `observaciones_actividad` varchar(255),
-  
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabla que contiene las actividades';
+  `observaciones_actividad` varchar(255)  
+);
 
 CREATE TABLE `Monitor` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -67,9 +64,10 @@ CREATE TABLE `Monitor` (
   `activo` bool NOT NULL,
   `contrato` enum('Concello','Autonomo','Subcontratado') NOT NULL,
   `observaciones_monitor` varchar(255),
+  `actividad` int(11) NOT NULL,
   
   FOREIGN KEY (actividad) REFERENCES Actividad(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tabla que contiene los monitores de las actividades.';
+);
 
 CREATE TABLE `Asistir` (
   `alumno_id` int(11) NOT NULL,

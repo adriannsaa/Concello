@@ -7,23 +7,27 @@ import java.util.List;
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-public class Alumno implements Serializable {
+public class Monitor implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-		
+
 	@Id
 	@NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,18 +43,13 @@ public class Alumno implements Serializable {
 	@Size(min=9, max = 9)
 	private String dni;
 
-	@Column(length = 2,nullable = false)
-	@NotNull(message="Introduzca una edad")
-	@Size(min=1, max = 2)
-	private int edad;
-
 	@Column(length = 50, nullable = false)
 	@NotNull(message="Introduzca un Email")
 	@Size(min=6, max = 50)
 	private String email;
 	
 	@Column(length = 100,nullable = false)
-	@NotNull(message="Introduzca una durección")
+	@NotNull(message="Introduzca una dirección")
 	@Size(min=5, max = 100)
 	private String direccion;
 	
@@ -74,36 +73,30 @@ public class Alumno implements Serializable {
 	@Size(min=9, max = 9)
 	private int telefono;
 	
-	@Column(length = 100,nullable = true)
-	@Size(min=5, max = 100)
-	private String nombre_autorizador;
+	@Column(length = 15,nullable = true)
+	@Size(min=0, max = 15)
+	private String sueldo;
 	
-	@Column(length = 9,nullable = true)
-	@Size(min=9, max = 9)
-	private String dni_autorizador;
+	@Column(nullable = false)
+	private boolean activo;
 	
-	@Column(length = 6,nullable = true)
-	@Size(min=0, max = 6)
-	private String descuento;
+	@Enumerated(EnumType.STRING)
+	private Contrato contrato;
 	
 	@Column(length = 255,nullable = true)
 	@Size(min=0, max = 250)
-	private String observaciones_alumno;
+	private String observaciones_monitor;
 
-	@ManyToMany
 	@XmlTransient
-	@JoinTable(name = "Asistir", 
-			joinColumns = @JoinColumn(name = "alumno_id", referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn(name = "actividad_id", referencedColumnName = "id")
-			)
-	private List<Actividad> listaDeActividades;
+	@OneToMany( mappedBy = "actividad", cascade = CascadeType.ALL)
+	private List<Actividad> actividadesImpartidas;
 
 
 	/**
 	 * Constructor a new instance of {@link Alumno} This constructor is empty
 	 * because is required
 	 */
-	public Alumno() {
+	public Monitor() {
 
 	}
 	
@@ -111,25 +104,26 @@ public class Alumno implements Serializable {
 	 * Constructor with parameters {@link Alumno}
 	 * 
 	 */
-	public Alumno(String nombre, String dni, int edad, String email, String direccion, int cp, String localidad, String provincia, 
-			int telefono, String nombre_autorizador, String dni_autorizador, String descuento, String observaciones_alumno) {
+	
+	public Monitor(String nombre, String dni, String email, String direccion, int cp, String localidad, String provincia, 
+			int telefono, String sueldo, boolean activo, Contrato contrato, String observaciones_monitor) {
 		
 		this.nombre = nombre;
 		this.dni = dni;
-		this.edad = edad;
 		this.email = email;
 		this.direccion = direccion;
 		this.cp = cp;
 		this.localidad = localidad;
 		this.provincia = provincia;
 		this.telefono = telefono;
-		this.nombre_autorizador = nombre_autorizador;
-		this.dni_autorizador = dni_autorizador;
-		this.descuento = descuento;
-		this.observaciones_alumno = observaciones_alumno;	
-		this.listaDeActividades = new ArrayList<Actividad>();
+		this.sueldo = sueldo;
+		this.activo = activo;
+		this.contrato = contrato;
+		this.observaciones_monitor = observaciones_monitor;	
+		this.actividadesImpartidas = new ArrayList<Actividad>();
 	}
 
+	
 	public int getId() {
 		return id;
 	}
@@ -152,14 +146,6 @@ public class Alumno implements Serializable {
 
 	public void setDni(String dni) {
 		this.dni = dni;
-	}
-
-	public int getEdad() {
-		return edad;
-	}
-
-	public void setEdad(int edad) {
-		this.edad = edad;
 	}
 
 	public String getEmail() {
@@ -210,44 +196,44 @@ public class Alumno implements Serializable {
 		this.telefono = telefono;
 	}
 
-	public String getNombre_autorizador() {
-		return nombre_autorizador;
+	public String getSueldo() {
+		return sueldo;
 	}
 
-	public void setNombre_autorizador(String nombre_autorizador) {
-		this.nombre_autorizador = nombre_autorizador;
+	public void setSueldo(String sueldo) {
+		this.sueldo = sueldo;
 	}
 
-	public String getDni_autorizador() {
-		return dni_autorizador;
+	public boolean isActivo() {
+		return activo;
 	}
 
-	public void setDni_autorizador(String dni_autorizador) {
-		this.dni_autorizador = dni_autorizador;
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 
-	public String getDescuento() {
-		return descuento;
+	public Contrato getContrato() {
+		return contrato;
 	}
 
-	public void setDescuento(String descuento) {
-		this.descuento = descuento;
+	public void setContrato(Contrato contrato) {
+		this.contrato = contrato;
 	}
 
-	public String getObservaciones_alumno() {
-		return observaciones_alumno;
+	public String getObservaciones_monitor() {
+		return observaciones_monitor;
 	}
 
-	public void setObservaciones_alumno(String observaciones_alumno) {
-		this.observaciones_alumno = observaciones_alumno;
+	public void setObservaciones_monitor(String observaciones_monitor) {
+		this.observaciones_monitor = observaciones_monitor;
 	}
 
-	public List<Actividad> getListaDeActividades() {
-		return listaDeActividades;
+	public List<Actividad> getActividadesImpartidas() {
+		return actividadesImpartidas;
 	}
 
-	public void setListaDeActividades(List<Actividad> listaDeActividades) {
-		this.listaDeActividades = listaDeActividades;
+	public void setActividadesImpartidas(List<Actividad> actividadesImpartidas) {
+		this.actividadesImpartidas = actividadesImpartidas;
 	}
 
 	public static long getSerialversionuid() {
@@ -258,7 +244,7 @@ public class Alumno implements Serializable {
 	/**
 	 * Override the hashCode method
 	 * 
-	 * @return id the hash code for the Alumno entity
+	 * @return id the hash code for the Monitor entity
 	 */
 	@Override
 	public final int hashCode() {
@@ -269,18 +255,18 @@ public class Alumno implements Serializable {
 	 * Override the equals method
 	 * 
 	 * @param obj
-	 *            This is an Alumno to compare
+	 *            This is an Monitor to compare
 	 * 
-	 * @return if two alumnos are equals or not
+	 * @return if two monitores are equals or not
 	 */
 	@Override
 	public final boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (isNull(obj) || !(obj instanceof Alumno))
+		if (isNull(obj) || !(obj instanceof Monitor))
 			return false;
 
-		Alumno other = (Alumno) obj;
+		Monitor other = (Monitor) obj;
 		if (isNull(obj)) {
 			return isNull(other.dni);
 		} else {
@@ -291,27 +277,25 @@ public class Alumno implements Serializable {
 	/**
 	 * Override the toString method
 	 * 
-	 * @return the Alumno object
+	 * @return the Monitor object
 	 */
-	
+
 	@Override
 	public String toString() {
-		return "Detalles del alumno \n"
+		return "Detalles del monitor \n"
 				+ "Id " + id + " \n"
 				+ "Nombre: " + nombre + " \n "
 				+ "DNI: " + dni + " \n"
-				+ "Edad: " + edad + " \n "
 				+ "Email:" + email + " \n "
 				+ "Direccion: " + direccion + " \n "
 				+ "CP: " + cp + " \n "
 				+ "Localidad " + localidad + " \n"
 				+ "Provincia: " + provincia + " \n "
 				+ "Telefono: " + telefono + " \n"
-				+ "Nombre_Autorizador: " + nombre_autorizador + " \n "
-				+ "Descuento:" + descuento + " \n "
-				+ "Observaciones_Alumno: " + observaciones_alumno + " \n "
-				+ "Lista de actividades: " + listaDeActividades;
+				+ "Sueldo: " + sueldo + " \n "
+				+ "Activo:" + activo + " \n "
+				+ "Contrato: " + contrato + " \n "
+				+ "Observaciones del monitor: " + observaciones_monitor;
 	}
 	
 }
-
