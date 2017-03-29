@@ -1,11 +1,10 @@
 package domain;
 
+import static java.util.Objects.isNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Objects.isNull;
-import static java.util.Objects.requireNonNull;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -253,7 +252,6 @@ public class Alumno implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
 	
 	/**
 	 * Override the hashCode method
