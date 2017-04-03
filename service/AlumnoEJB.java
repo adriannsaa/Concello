@@ -40,7 +40,7 @@ public class AlumnoEJB {
 		
 		em.persist(alumno);
 		logger.log(Level.INFO, "El alumno " + alumno.getNombre() + " ha sido creado.");
-		return findAlumnoByDNI(dni);
+		return alumno;
 	}
 	
 	
